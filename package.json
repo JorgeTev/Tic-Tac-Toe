@@ -1,0 +1,31 @@
+{
+  "name": "tik-tak_toe",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JorgeTev/Tic-Tac-Toe.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JorgeTev/Tic-Tac-Toe/issues"
+  },
+  "homepage": "https://github.com/JorgeTev/Tic-Tac-Toe#readme",
+  "description": "",
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "vite": "^6.2.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4"
+  }
+}
