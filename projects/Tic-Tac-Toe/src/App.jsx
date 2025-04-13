@@ -1,22 +1,7 @@
 import './App.css'
-
-const TURN = {
-  X:'x',
-  O:'o'
-}
-
-
-const Square = ({children, isSelected, updateBoard, index}) => {
-  const className= `square ${isSelected ? 'is-selected': ''}`
-
-  const handleClick = () =>{
-    updateBoard()
-  }
-  return (
-    <div className="square">
-      {children}
-    </div>
-  )
+const TURN ={
+  'X':'x',
+  'O':'o'
 }
 
 const WINNER_COMBOS = [
@@ -30,64 +15,110 @@ const WINNER_COMBOS = [
   [2, 4, 6]
 ]
 
-function App() {
-  const [board, setBoard]= useState(Array(9).fill(null))
-  const [turn, setTurn] = useState(TURN.X)
-  const [winner, setWinner] = useState(null)
 
-  const checkWinner = (boardToCheck) =>{
-    for (const combo of WINNER_COMBOS){
-      const [a, b, c] = combo
-      if(
-        newBoard[a] &&
-        newBoard[a] === newBoard[b] &&
-        newBoard[a] === newBoard[c]
-      ){return boardToCheck[a]}
-    }
-    return null
+const Square = ({children,isSelected, updateBoard, index}) => {
+  const className = `square ${isSelected ? 'is-selected' : ''}`
+
+  const handleClick = () =>{
+    updateBoard(index)
   }
 
-  const updateBoard = (index) => {
-    if(board[index] || winner) return
+  return(
+    <div onclick= {handleClick} className = {className}>
+      {children}
+    </div>
+  )
+}
 
+function App() {
+  const [board, setBoard] = Status(Array(9).fill(null))
+  const [turn, setTurn] = Status(TURN.X)
+  const [winner, setWinner] = Status(null)
+
+  const updateBoard = (index) => {
+    if (board[index] || winner) return
     const newBoard = [...board]
     newBoard[index] = turn
     setBoard(newBoard)
+
 
     const newTurn = turn === TURN.X ? TURN.O : TURN.X
     setTurn(newTurn)
 
     const newWinner = checkWinner(newBoard)
     if(newWinner){
-      setWinner((prevWinner)=>{
-        console.log(`Ganador: ${newWinner}, el anterior era ${prevWinner}`)
-        return newWinner
-      })
+      setWinner(newWinner)
+    }else if(checkEndGame(newBoard)){
+      setWinner(false)
     }
   }
 
-  return (
+  const checkEndGame = (newBoard) => {
+    return board.every((square) => square !== null)
+  }
+
+  const checkWinner = (boardToCheck) => {
+    for (const combos of WINNER_COMBOS){
+      const [a,b,c]= combos
+      if (
+        boardToCheck[a] && boardToCheck[a]===boardToCheck[b] && boardToCheck[a]===boardToCheck[c]
+      ){return boardToCheck[a]}
+    }
+    return null
+  }
+
+  const resetGame = () => {
+    setBoard(Array(9).fill(null))
+    setTurn(TURN.X)
+    setWinner(null)
+  }
+
+
+  return(
     <main className='board'>
       <h1>Tic Tac Toe</h1>
-      <section className="game">
+      <section className='game'>
         {
-          board.map((turn, index) => {
-            return (
+          board.map((square, index) => {
+            return(
               <Square
-                key = {index}
-                index = {index}
+                key={index}
+                index={index}
                 updateBoard={updateBoard}
               >
-                {index}
+                {square}
               </Square>
             )
           })
         }
       </section>
-      <section className="turn">
-        <Square isSelected={turn === TURN.X}> {TURN.X} </Square>
-        <Square isSelected={turn === TURN.O}> {TURN.O} </Square>
+
+      <section className='turn'>
+        <Square isSelected={turn === TURN.X}>{TURN.X}</Square>
+        <Square isSelected={turn === TURN.O}>{TURN.O}</Square>
       </section>
+
+      {
+        winner !== null && (
+          <section className='winner'>
+            <div className='text'> 
+              <h2>
+                {
+                  winner === false ? 'Empate' : 'Gano: '
+                }
+              </h2>
+
+              <header className='win'>
+                {winner && <Square>{winner}</Square>}
+              </header>
+
+              <footer>
+                <button onclick={resetGame}>Empezar de nuevo</button>
+              </footer>
+            </div>
+          </section>
+        )
+      }
     </main>
   )
 }
