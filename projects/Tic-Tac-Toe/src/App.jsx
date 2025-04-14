@@ -1,8 +1,9 @@
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import confetti from "canvas-confetti"
 import { Square } from './components/Square.jsx'
 import { TURN } from './constants.js'
+import { saveGameToStorage, resetGameStorage } from './logic/storage/index.js'
 
 function App() {
   const [board, setBoard] = useState(() => {
@@ -26,9 +27,6 @@ function App() {
     const newTurn = turn === TURN.X ? TURN.O : TURN.X
     setTurn(newTurn)
 
-    window.localStorage.setItem('board', JSON.stringify(newBoard))
-    window.localStorage.setItem('turn', newTurn)
-
     const newWinner = checkWinnerFrom(newBoard)
     if(newWinner){
       confetti()
@@ -43,10 +41,12 @@ function App() {
     setTurn(TURN.X)
     setWinner(null)
 
-    window.localStorage.removeItem('board')
-    window.localStorage.removeItem('turn')
+    resetGameStorage()
   }
 
+  useEffect(()=>{
+    saveGameToStorage({board: newBoard, turn: newTurn})
+  }, [turn, board])
 
   return(
     <main className='board'>
