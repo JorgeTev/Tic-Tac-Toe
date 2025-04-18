@@ -1,0 +1,22 @@
+main {
+  display: grid;
+  place-items: center;      /* Centrado horizontal y vertical */
+  min-height: 100vh;        /* Ocupa toda la altura de la ventana */
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: system-ui;
+  text-align: center;       /* Centrar texto */
+}
+
+
+section{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+section img{
+  max-width: 320px;
+  height: auto;
+}
